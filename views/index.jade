@@ -1,0 +1,11 @@
+h1 Gogobot Build Radiator
+h2 Build Number: #{build.number}
+h2 Build Status: #{build.status}
+h2 Build Failed? #{build.isBroken}
+h2 Build Is Running? #{build.isRunning}
+
+h2 Build Changes
+ul
+  - build.changes.forEach(function(item){
+    li Author: #{item.userName}, Comment: #{item.comment}
+  - })
