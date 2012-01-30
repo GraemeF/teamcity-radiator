@@ -7,6 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , Build = require('./build');
 
+require('./underscore');
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -31,11 +33,20 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res) {
-  var build = new Build("bt2");
-
-  build.get(function() {
-    res.render('index', { build: this });
-  });
+  var builds = [new Build("bt2", "Unit Tests"), new Build("bt5", "Integration Tests")];
+  var done = false;
+  
+  // ugliest hack ever to make it sequential.. was having weird results in lixmljs when in parallel
+  builds[0].get(function() { done = true; });
+  
+  var timeout = setTimeout(function() {
+    if(done) {
+      clearTimeout(timeout);
+      builds[1].get(function() { 
+        res.render('index', { builds: builds });
+      });
+    }
+  }, 1000);  
 });
 
 app.listen(3000);
