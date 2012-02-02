@@ -3,6 +3,7 @@
     - var buildClass = build.isBroken ? 'red' : 'green';
     div(class="build #{buildClass}", data-seconds-left="#{build.timeLeft}")
       h1= build.name
+      h3.statustext= build.statusText
       - if (build.isBroken) 
         span.commiter Possible offender(s):
         img.commiter_image src="/images/#{build.changes[0].userName}.png"

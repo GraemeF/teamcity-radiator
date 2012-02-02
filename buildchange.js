@@ -3,7 +3,7 @@ require('./inflections');
 var BuildChange = function(xmlDoc) {
   this.comment = xmlDoc.get("//comment").text().capitalize();
   this.userName = xmlDoc.root().attr("username").value().titleize();
-  this.avatar = this.avatarsMap[this.userName];
+  this.avatar = this.avatarsMap[this.userName.toLowerCase()] || (this.userName + ".png");
 };
 
 // properties and methods
@@ -11,17 +11,17 @@ BuildChange.prototype = {
   comment: "",
   userName: "",
   avatarsMap: { 
-    "Elad": "elad.png",
-    "Elad Ossadon": "elad.png",
-    "Avi Tzurel": "avi.png",
-    "Felipe Lima": "felipe.png",
+    "elad": "elad.png",
+    "elad ossadon": "elad.png",
+    "avi tzurel": "avi.png",
+    "felipe lima": "felipe.png",
     "felipecsl": "felipe.png",
-    "Eduardo Sasso": "eduardo.png",
-    "Rodrigo Soares": "rodrigo.png",
-    "Steve Mui": "steve.png",
+    "eduardo sasso": "eduardo.png",
+    "rodrigo soares": "rodrigo.png",
+    "steve mui": "steve.png",
     "smui": "steve.png",
-    "Dave Ward": "dave.png",
-    "Emon Tjokro": "emon.png"
+    "dave ward": "dave.png",
+    "emon tjokro": "emon.png"
   }
 };
 

@@ -39,14 +39,14 @@ app.get('/', function(req, res) {
   // ugliest hack ever to make it sequential.. was having weird results in lixmljs when in parallel
   builds[0].get(function() { done = true; });
   
-  var timeout = setTimeout(function() {
+  var interval = setInterval(function() {
     if(done) {
-      clearTimeout(timeout);
+      clearInterval(interval);
       builds[1].get(function() { 
         res.render('index', { builds: builds });
       });
     }
-  }, 1000);  
+  }, 200);
 });
 
 app.listen(3000);

@@ -12,6 +12,7 @@ var Build = function(buildTypeId, name) {
 Build.prototype = {
   name: "",
   status: "",
+  statusText: "",
   number: 0,
   isBroken: false,
   isRunning: false,
@@ -42,28 +43,28 @@ Build.prototype = {
       if (percentage != null) {
         self.percentageComplete = parseInt(percentage.value());
       }
-      if (self.isRunning) {
-        self.getTimeLeft(function(timeLeft) {
-          self.timeLeft = timeLeft;
-          self.getChanges(function() {
-            callback.call(self);
-          });
-        });
-      }
-      else {
+      self.getTimeLeft(function(timeLeft) {
+        self.timeLeft = timeLeft;
         self.getChanges(function() {
           callback.call(self);
         });
-      }
+      });
     });
   },
 
   getTimeLeft: function(callback) {
+    self = this;
     teamCity.requestXml("/builds/" + this.id, function(xmlDoc) {
-      var runningInfo = xmlDoc.find("//running-info");
-
-      callback(parseInt(runningInfo.attr("estimatedTotalSeconds").value) - 
-        parseInt(runningInfo.attr("elapsedSeconds").value));
+      var runningInfo = xmlDoc.get("//running-info");
+      self.statusText = xmlDoc.get("//statusText").text();
+      
+      if(runningInfo) {
+        callback(parseInt(runningInfo.attr("estimatedTotalSeconds").value) - 
+          parseInt(runningInfo.attr("elapsedSeconds").value));
+      }
+      else {
+        callback(0);
+      }
     });
   },
 
