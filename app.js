@@ -5,9 +5,8 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , Build = require('./build');
-
-require('./underscore');
+  , Build = require('./build')
+  , _ = require('./underscore');
 
 var app = module.exports = express.createServer();
 
@@ -30,23 +29,34 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+var next = function(callback) {
+  callback();
+};
+
 // Routes
 
 app.get('/', function(req, res) {
-  var builds = [new Build("bt2", "Unit Tests"), new Build("bt5", "Integration Tests")];
-  var done = false;
-  
-  // ugliest hack ever to make it sequential.. was having weird results in lixmljs when in parallel
-  builds[0].get(function() { done = true; });
-  
-  var interval = setInterval(function() {
-    if(done) {
-      clearInterval(interval);
-      builds[1].get(function() { 
-        res.render('index', { builds: builds });
+  var builds = [
+    new Build("bt2", "Unit Tests"), 
+    new Build("bt3", "Deploy To Staging"),
+    new Build("bt5", "Integration Tests"), 
+    new Build("bt7", "Deploy To Matrix"),
+    new Build("bt4", "Deploy To Production")
+  ];
+
+  builds[0].get(function() { 
+    builds[1].get(function() {
+      builds[2].get(function() {
+        builds[3].get(function() {
+          builds[4].get(function() { 
+            res.render('index', { 
+              builds: _.sortBy(builds, function(b) { return !b.isBroken; })
+            });
+          });
+        });
       });
-    }
-  }, 200);
+    }); 
+  });
 });
 
 app.listen(process.env.PORT || 3000);

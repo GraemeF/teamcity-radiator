@@ -2,6 +2,8 @@ var libxmljs = require("libxmljs");
 var teamCity = require("./teamcity");
 var BuildChange = require("./buildchange");
 
+var _ = require('./underscore');
+
 // Constructor
 var Build = function(buildTypeId, name) {
   this.buildTypeId = buildTypeId;
@@ -23,8 +25,8 @@ Build.prototype = {
   timeLeft: 0,
 
   get: function(callback) {
+    var requestPath = '/builds?locator=running:all,buildType:(id:' + this.buildTypeId + '),count:1';
     var self = this;
-    var requestPath = '/builds?locator=running:all,buildType:(id:' + self.buildTypeId + '),count:1';
 
     teamCity.requestXml(requestPath, function(xmlDoc) {
       var buildElem = xmlDoc.get("//build");
@@ -38,13 +40,13 @@ Build.prototype = {
       self.isRunning = false;
 
       if(running !== null) {
-        self.isRunning = running.value === "true";
+        self.isRunning = running.value() === "true";
       }
       if (percentage != null) {
         self.percentageComplete = parseInt(percentage.value());
       }
       self.getTimeLeft(function(timeLeft) {
-        self.timeLeft = timeLeft;
+        self.timeLeft = timeLeft / 60;
         self.getChanges(function() {
           callback.call(self);
         });
@@ -55,12 +57,14 @@ Build.prototype = {
   getTimeLeft: function(callback) {
     self = this;
     teamCity.requestXml("/builds/" + this.id, function(xmlDoc) {
+      console.log(xmlDoc.toString());
       var runningInfo = xmlDoc.get("//running-info");
       self.statusText = xmlDoc.get("//statusText").text();
       
       if(runningInfo) {
-        callback(parseInt(runningInfo.attr("estimatedTotalSeconds").value) - 
-          parseInt(runningInfo.attr("elapsedSeconds").value));
+        callback(
+          parseInt(runningInfo.attr("estimatedTotalSeconds").value()) - 
+          parseInt(runningInfo.attr("elapsedSeconds").value()));
       }
       else {
         callback(0);
@@ -70,6 +74,9 @@ Build.prototype = {
 
   getChanges: function (callback) {
     var self = this;
+    if(!self.isBroken) {
+      callback.call(self); // no need to get changes for green build
+    }
     self.changes = [];
     teamCity.requestXml("/changes?build=" + self.id, function(xmlDoc) {
       var xmlChanges = xmlDoc.find("//change");
@@ -82,7 +89,11 @@ Build.prototype = {
         changeId = xmlChanges[i].attr('id').value();
         (function(it) {
           teamCity.requestXml("/changes/id:" + changeId, function(changeXml) {
-            self.changes.push(new BuildChange(changeXml));
+            var newChange = new BuildChange(changeXml);
+            
+            if(!_.chain(self.changes).map(function(c) { return c.userName; }).include(newChange.userName).value()) {
+              self.changes.push(newChange);
+            }
 
             if(it == xmlChanges.length - 1) {
               callback.call(self);

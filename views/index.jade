@@ -3,26 +3,25 @@
     - var buildClass = build.isBroken ? 'red' : 'green';
     div(class="build #{buildClass}", data-seconds-left="#{build.timeLeft}")
       h1= build.name
-      h3.statustext= build.statusText
       - if (build.isBroken) 
         span.commiter Possible offender(s):
         img.commiter_image src="/images/#{build.changes[0].userName}.png"
       span.number ##{build.number}
-      - if(build.changes.length == 0)
+      - if(build.isBroken && build.changes.length == 0)
         h2 No changes in this build
       - else 
-        h2 Changes:
         ul
           - build.changes.forEach(function(item) {
             li 
               img(src="/images/#{item.avatar}")
-              span= item.comment
           - })
-        - if (build.isRunning)
-          .percentage style="width: #{build.runningPercentage}%;"
-          - var minutesLeft = build.secondsLeft / 60;
-          - if (minutesLeft >= 0) 
-            .timeleft #{minutesLeft} minutes left
-          else
-            .timeleft #{Math.Abs(minutesLeft)} minutes overtime
+      - if (build.isRunning)
+        .percentage(style="width: #{build.percentageComplete}%;")
+        - var minutesLeft = build.timeLeft / 60;
+        - if (minutesLeft >= 0) 
+          .timeleft #{Math.abs(minutesLeft)} minutes left
+        else
+          .timeleft #{Math.abs(Math.ceil(minutesLeft))} minutes overtime
+      - if (build.isBroken)
+        h3.statustext= build.statusText
   - })

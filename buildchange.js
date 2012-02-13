@@ -20,6 +20,7 @@ BuildChange.prototype = {
     "rodrigo soares": "rodrigo.png",
     "steve mui": "steve.png",
     "smui": "steve.png",
+    "adrian chang": "adrian.png",
     "dave ward": "dave.png",
     "emon tjokro": "emon.png"
   }
