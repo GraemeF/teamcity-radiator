@@ -5,19 +5,18 @@ body {
 
 a { color: #00B7FF; }
 
-.build { padding: 5px 25px; text-shadow: 0px 1px 5px black; color: white; position:relative; margin-right: 6px; overflow: hidden; width: 46%; float: left; margin-bottom: 6px;}
+.build { padding: 5px 25px; text-shadow: 0px 1px 5px black; color: white; position:relative; margin-right: 6px; overflow: hidden; width: 46%; float: left; margin-bottom: 6px; height: 275px;}
 .build h1 { text-align: center; margin: 5px 0 0 0;}
 .build h2 {margin: 15px 0 0 0;}
 .build .statustext { text-align: right; }
 .build.red {
-  height: 275px;
   background-color: red; 
   -webkit-animation-name: glow;  
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
   -webkit-animation-duration: 3s;
 }
-.build.green {background-color: #219117;}
+div.build.green {background-color: #219117; }
 .build ul li { list-style: none; font-size: 20px; margin-right: 10px; float: left ; padding: 5px; width: 135px; height: 135px; }
 .build ul li img { float: left; box-shadow: 0 0px 1px 2px #000, 0 -1px 5px 3px #fff; }
 .build ul li span { line-height: 50px;}
