@@ -46,7 +46,7 @@ setInterval(function() {
 
 app.post('/build', function(req, res) {
   res.send("OK");
-  console.log(req.body.build.buildStatus);
+  stream.now.receiveMessage(req.body.build);
 });
 
 app.get('/', function(req, res) {
