@@ -8,17 +8,47 @@ html
     script(src="/nowjs/now.js")
   body!= body
   script
+    var failure = new Audio("/audio/lasier.mp3");
+    var success = new Audio("/audio/woohoo.mp3");
+
+    var startBuild = function(build) {
+      console.log("Build started: " + build.buildFullName);
+    };
+
+    var changeBuildStatus = function(build) {
+      console.log("Build changed: " + build.buildFullName + " - " + build.buildResult);
+    };
+
+    var finishBuild = function(build) {
+      console.log("Build finished: " + build.buildFullName + " - " + build.buildResult);
+      if(build.buildResult == 'failure') {
+        failure.play();
+      }
+      else if(build.buildResult == 'success') {
+        success.play();
+      }
+    };
+
     setTimeout(function(){
       window.location.reload();
-    }, 180000);
+    }, 180000); //refresh every 3 minutes
+
     $(".percentage").each(function() {
       $(this).animate({
         width: "100%"
       }, parseInt($(this).attr("data-seconds-left")) * 1000, 'linear');
     });
 
-    now.receiveMessage = function(message){
-      console.log("message received " + message);
+    now.receiveBuildEvent = function(build){
+      switch(build.notifyType) {
+        case "buildStarted":
+          startBuild(build);
+          break;
+        case "statusChanged":
+          changeBuildStatus(build);
+          break;
+        case "buildFinished"
+          finishBuild(build);
+          break;
+      }
     }
-    //var audio = new Audio("/audio/lasier.mp3");
-    //audio.play();

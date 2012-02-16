@@ -42,7 +42,7 @@ var parseBuildPayload = function(json) {
 
 app.post('/build', function(req, res) {
   res.send("OK");
-  stream.now.receiveMessage(req.body.build);
+  stream.now.receiveBuildEvent(req.body.build);
 });
 
 app.get('/', function(req, res) {
