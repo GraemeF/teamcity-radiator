@@ -6,9 +6,11 @@
 var express = require('express')
   , routes = require('./routes')
   , Build = require('./build')
-  , _ = require('./underscore');
+  , _ = require('./underscore')
+  , nowjs = require("now");
 
 var app = module.exports = express.createServer();
+var stream = nowjs.initialize(app);
 
 // Configuration
 
@@ -29,11 +31,23 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-var next = function(callback) {
-  callback();
+var parseBuildPayload = function(json) {
+  var buildStatus = data.build.buildStatus;
+  var buildResult = data.build.buildResult;
+  var buildNum    = data.build.buildNumber;
+  var buildName   = data.build.buildName;
+  var projName    = data.build.projectName;
+  var message     = data.build.message;
 };
 
-// Routes
+setInterval(function() {
+  stream.now.receiveMessage("Hello World! at " + new Date().toString());
+}, 10000);
+
+app.post('/build', function(req, res) {
+  res.send("OK");
+  console.log(JSON.parse(req.body).toString());
+});
 
 app.get('/', function(req, res) {
   var builds = [

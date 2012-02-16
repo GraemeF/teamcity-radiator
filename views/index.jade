@@ -7,13 +7,14 @@
         span.commiter Possible offender(s):
         img.commiter_image src="/images/#{build.changes[0].userName}.png"
       span.number ##{build.number}
-      - if(build.isBroken && build.changes.length == 0)
-        h2 No changes in this build
-      - else 
-        ul
-          - build.changes.forEach(function(item) {
-            li 
-              img(src="/images/#{item.avatar}")
+      - if(build.isBroken)
+        - if(build.changes.length == 0)
+          h2 No changes in this build
+        - else 
+          ul
+            - build.changes.forEach(function(item) {
+              li 
+                img(src="/images/#{item.avatar}")
           - })
       - if (build.isRunning)
         .percentage(style="width: #{build.percentageComplete}%;", data-seconds-left="#{build.timeLeft}")
