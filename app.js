@@ -51,6 +51,7 @@ app.get('/', function(req, res) {
     new Build("bt3", "Deploy To Staging"),
     new Build("bt5", "Integration Tests"), 
     new Build("bt7", "Deploy To Matrix"),
+    new Build("bt6", "Custom Branch Tests"),
     new Build("bt4", "Deploy To Production")
   ];
 
