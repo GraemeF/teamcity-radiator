@@ -46,7 +46,7 @@ setInterval(function() {
 
 app.post('/build', function(req, res) {
   res.send("OK");
-  console.log(req.body);
+  console.log(req.body.build.buildStatus);
 });
 
 app.get('/', function(req, res) {
