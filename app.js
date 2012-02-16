@@ -46,7 +46,7 @@ setInterval(function() {
 
 app.post('/build', function(req, res) {
   res.send("OK");
-  console.log(JSON.parse(req.body).toString());
+  console.log(req.body);
 });
 
 app.get('/', function(req, res) {
