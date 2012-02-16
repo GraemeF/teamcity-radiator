@@ -40,10 +40,6 @@ var parseBuildPayload = function(json) {
   var message     = data.build.message;
 };
 
-setInterval(function() {
-  stream.now.receiveMessage("Hello World! at " + new Date().toString());
-}, 10000);
-
 app.post('/build', function(req, res) {
   res.send("OK");
   stream.now.receiveMessage(req.body.build);
