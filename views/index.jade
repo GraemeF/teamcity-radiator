@@ -15,7 +15,7 @@
             - build.changes.forEach(function(item) {
               li 
                 img(src="/images/#{item.avatar}")
-          - })
+            - })
       - if (build.isRunning)
         .percentage(style="width: #{build.percentageComplete}%;", data-seconds-left="#{build.timeLeft}")
         - var minutesLeft = build.timeLeft / 60;
