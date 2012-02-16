@@ -16,10 +16,10 @@
               img(src="/images/#{item.avatar}")
           - })
       - if (build.isRunning)
-        .percentage(style="width: #{build.percentageComplete}%;")
+        .percentage(style="width: #{build.percentageComplete}%;", data-seconds-left="#{build.timeLeft}")
         - var minutesLeft = build.timeLeft / 60;
         - if (minutesLeft >= 0) 
-          .timeleft #{Math.abs(minutesLeft)} minutes left
+          .timeleft #{Math.abs(Math.ceil(minutesLeft))} minutes left
         else
           .timeleft #{Math.abs(Math.ceil(minutesLeft))} minutes overtime
       - if (build.isBroken)

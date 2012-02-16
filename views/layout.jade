@@ -4,29 +4,14 @@ html
     title Gogobot Build Radiator
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
   body!= body
   script
-    var scrollToTop = function() {
-      $(".build ul").animate(
-        { scrollTop : 0 }, 
-        1000, 
-        "linear"
-      );
-    };
-    var scrollToBottom = function() {
-      $('.build ul').each(function() {
-        $(this).animate(
-          { scrollTop : this.scrollHeight - $(this).height() }, 
-          20000, 
-          "linear", 
-          scrollToTop
-        );
-      });
-    };
-    $(function() {  
-      scrollToBottom();
-      
-      setInterval(function() {
-        scrollToBottom();
-      }, 25000);
+    setTimeout(function(){
+      window.location.reload();
+    }, 180000);
+    $(".percentage").each(function() {
+      $(this).animate({
+        width: "100%"
+      }, parseInt($(this).attr("data-seconds-left")) * 1000, 'linear');
     });

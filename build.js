@@ -46,7 +46,7 @@ Build.prototype = {
         self.percentageComplete = parseInt(percentage.value());
       }
       self.getTimeLeft(function(timeLeft) {
-        self.timeLeft = timeLeft / 60;
+        self.timeLeft = timeLeft;
         self.getChanges(function() {
           callback.call(self);
         });
@@ -57,7 +57,6 @@ Build.prototype = {
   getTimeLeft: function(callback) {
     self = this;
     teamCity.requestXml("/builds/" + this.id, function(xmlDoc) {
-      console.log(xmlDoc.toString());
       var runningInfo = xmlDoc.get("//running-info");
       self.statusText = xmlDoc.get("//statusText").text();
       
