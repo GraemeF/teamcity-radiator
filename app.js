@@ -55,19 +55,24 @@ app.get('/', function(req, res) {
     new Build("bt4", "Deploy To Production")
   ];
 
-  builds[0].get(function() { 
-    builds[1].get(function() {
-      builds[2].get(function() {
-        builds[3].get(function() {
-          builds[4].get(function() { 
-            res.render('index', { 
-              builds: _.sortBy(builds, function(b) { return !b.isBroken; })
-            });
-          });
+  var parseBuilds = function(i) {
+    var callback;
+
+    if(i < builds.length - 1) {
+      callback = function() { parseBuilds(i + 1); };
+    }
+    else {
+      callback = function() { 
+        res.render('index', { 
+          builds: _.sortBy(builds, function(b) { return !b.isBroken; })
         });
-      });
-    }); 
-  });
+      };
+    }
+
+    builds[i].get(callback);
+  };
+
+  parseBuilds(0);
 });
 
 app.listen(process.env.PORT || 3000);

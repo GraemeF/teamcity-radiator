@@ -23,6 +23,7 @@ Build.prototype = {
   percentageComplete: 100,
   buildTypeId: 0,
   timeLeft: 0,
+  startDate: '',
 
   get: function(callback) {
     var requestPath = '/builds?locator=running:all,buildType:(id:' + this.buildTypeId + '),count:1';
@@ -59,6 +60,16 @@ Build.prototype = {
     teamCity.requestXml("/builds/" + this.id, function(xmlDoc) {
       var runningInfo = xmlDoc.get("//running-info");
       self.statusText = xmlDoc.get("//statusText").text();
+
+      var dateTime = xmlDoc.get("//startDate").text();
+      var year = dateTime.substr(0, 4);
+      var month = dateTime.substr(4, 2);
+      var day = dateTime.substr(6, 2);
+      var hour = dateTime.substr(9, 2) - 8; // to PST
+      var min = dateTime.substr(11, 2);
+      var sec = dateTime.substr(13, 2);
+
+      self.startDate = new Date(year, month, day, hour, min, sec);
       
       if(runningInfo) {
         callback(

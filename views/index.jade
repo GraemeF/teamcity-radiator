@@ -1,8 +1,10 @@
 .builds
   - builds.forEach(function(build) {
     - var buildClass = build.isBroken ? 'red' : 'green';
-    div(class="build #{buildClass}", data-seconds-left="#{build.timeLeft}")
+    div(class="build #{buildClass} #{build.buildTypeId}", data-seconds-left="#{build.timeLeft}")
       h1= build.name
+      - if (build.startDate)
+        span.startDate #{build.startDate.getMonth()}/#{build.startDate.getDate()}/#{build.startDate.getFullYear()} #{build.startDate.getHours()}:#{(build.startDate.getMinutes() < 10 ? '0' : '') + build.startDate.getMinutes()}
       - if (build.isBroken) 
         span.commiter Possible offender(s):
         img.commiter_image src="/images/#{build.changes[0].userName}.png"

@@ -20,11 +20,18 @@ html
     };
 
     var finishBuild = function(build) {
+      //for(var key in build) { console.log(key + " - " + build[key]); }
+
       console.log("Build finished: " + build.buildFullName + " - " + build.buildResult);
+      var buildDiv = $("." + build.buildTypeId);
+      buildDiv.find(".percentage").hide();
+
       if(build.buildResult == 'failure') {
+        buildDiv.removeClass("green").addClass("red");
         failure.play();
       }
       else if(build.buildResult == 'success') {
+        buildDiv.removeClass("red").addClass("green");
         success.play();
       }
     };
