@@ -42,7 +42,10 @@ var parseBuildPayload = function(json) {
 
 app.post('/build', function(req, res) {
   res.send("OK");
-  stream.now.receiveBuildEvent(req.body.build);
+  
+  if(stream.now.receiveBuildEvent) {
+    stream.now.receiveBuildEvent(req.body.build);
+  }
 });
 
 app.get('/', function(req, res) {
@@ -51,7 +54,7 @@ app.get('/', function(req, res) {
     new Build("bt3", "Deploy To Staging"),
     new Build("bt5", "Integration Tests"), 
     new Build("bt7", "Deploy To Matrix"),
-    new Build("bt6", "Custom Branch Tests"),
+    new Build("bt9", "API Tests"),
     new Build("bt4", "Deploy To Production")
   ];
 
