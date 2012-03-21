@@ -75,7 +75,13 @@ app.get('/', function(req, res) {
     builds[i].get(callback);
   };
 
-  parseBuilds(0);
+  try {
+    parseBuilds(0);
+  }
+  catch(exc) {
+    // Probably failed to communicate with TeamCity
+    res.render('index', { builds: [] });
+  }
 });
 
 app.listen(process.env.PORT || 3000);

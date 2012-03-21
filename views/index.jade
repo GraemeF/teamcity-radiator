@@ -1,4 +1,7 @@
 .builds
+  - if (builds.length == 0) {
+    h1 Failed to communicate with TeamCity... Retrying in 3 minutes
+  - }
   - builds.forEach(function(build) {
     - var buildClass = build.isBroken ? 'red' : 'green';
     div(class="build #{buildClass} #{build.buildTypeId}", data-seconds-left="#{build.timeLeft}")
