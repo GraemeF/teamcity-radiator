@@ -1,0 +1,10 @@
+{ 
+	"builds": [
+		{ "buildTypeId": "bt2", "name": "Unit Tests" 					 },
+		{ "buildTypeId": "bt3", "name": "Deploy To Staging" 	 },
+		{ "buildTypeId": "bt5", "name": "Integration Tests" 	 }, 
+		{ "buildTypeId": "bt7", "name": "Deploy To Matrix" 		 },
+		{ "buildTypeId": "bt9", "name": "API Tests" 					 },
+		{ "buildTypeId": "bt4", "name": "Deploy To Production" }
+	]
+}
