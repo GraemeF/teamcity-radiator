@@ -1,11 +1,8 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
+  , config = require('./config')
   , routes = require('./routes')
   , Build = require('./build')
+  , radiator = require('./radiator')
   , _ = require('./underscore')
   , nowjs = require("now");
 
@@ -49,39 +46,20 @@ app.post('/build', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-  var builds = [
-    new Build("bt2", "Unit Tests"), 
-    new Build("bt3", "Deploy To Staging"),
-    new Build("bt5", "Integration Tests"), 
-    new Build("bt7", "Deploy To Matrix"),
-    new Build("bt9", "API Tests"),
-    new Build("bt4", "Deploy To Production")
-  ];
-
-  var parseBuilds = function(i) {
-    var callback;
-
-    if(i < builds.length - 1) {
-      callback = function() { parseBuilds(i + 1); };
-    }
-    else {
-      callback = function() { 
+  config.parseBuildConfigurations(function(builds) {
+    try {
+      radiator.requestData(builds, function() {
         res.render('index', { 
           builds: _.sortBy(builds, function(b) { return !b.isBroken; })
         });
-      };
+      });
     }
-
-    builds[i].get(callback);
-  };
-
-  try {
-    parseBuilds(0);
-  }
-  catch(exc) {
-    // Probably failed to communicate with TeamCity
-    res.render('index', { builds: [] });
-  }
+    catch(exc) {
+      // Probably failed to communicate with TeamCity
+      console.log(exc);
+      res.render('index', { builds: [] });
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000);

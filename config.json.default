@@ -1,0 +1,7 @@
+{ 
+	"builds": [
+		{ "buildTypeId": "bt1", "name": "Sample Build" 				 },
+		{ "buildTypeId": "bt2", "name": "Change me" 					 }
+		// ...
+	]
+}

@@ -85,7 +85,7 @@ Build.prototype = {
   getChanges: function (callback) {
     var self = this;
     if(!self.isBroken) {
-      callback.call(self); // no need to get changes for green build
+      return callback.call(self); // no need to get changes for green build
     }
     self.changes = [];
     teamCity.requestXml("/changes?build=" + self.id, function(xmlDoc) {
