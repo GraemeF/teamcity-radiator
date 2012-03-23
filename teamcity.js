@@ -6,7 +6,7 @@ var libxmljs = require("libxmljs");
 var http = require("http");
 
 exports.requestXml = function(path, callback) {
-  var base_url = "ci.gogobot.com";
+  var base_url = process.env.RADIATOR_TEAMCITY_HOST;
   var client = http.createClient(80, base_url);
   var username = process.env.RADIATOR_TEAMCITY_USERNAME;
   var password = process.env.RADIATOR_TEAMCITY_PASSWORD;
