@@ -10,5 +10,10 @@
     },
     "scripts":{
         "start":"node ./app"
+    },
+    "config":{
+        "teamcity_host":"my.teamcity.server",
+        "teamcity_username":"guest",
+        "teamcity_password":"guest"
     }
 }
