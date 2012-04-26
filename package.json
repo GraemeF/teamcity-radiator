@@ -1,11 +1,19 @@
 {
-    "name": "gogobot-radiator"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.4"
-    , "jade": ">= 0.0.1"
-    , "libxmljs": "0.5.3"
-    , "now": "0.8.1"
-  }
+    "name":"gogobot-radiator",
+    "version":"0.0.1",
+    "private":true,
+    "dependencies":{
+        "express":"2.5.4",
+        "jade":">= 0.0.1",
+        "libxmljs":"0.5.3",
+        "now":"0.8.1"
+    },
+    "scripts":{
+        "start":"node ./app"
+    },
+    "config":{
+        "teamcity_host":"my.teamcity.server",
+        "teamcity_username":"guest",
+        "teamcity_password":"guest"
+    }
 }
