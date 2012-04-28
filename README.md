@@ -1,21 +1,20 @@
 Gogobot node.js build radiator for TeamCity
 
-# Setup
+# Install
 
- * Edit config.json and add your list of buildTypeId -> name mappings that you want to be displayed in the radiator
- * Add the environment variables for the TeamCity API authentication: 
-  
-  ```
-  RADIATOR_TEAMCITY_HOST=your.host.name
-  RADIATOR_TEAMCITY_USERNAME=username
-  RADIATOR_TEAMCITY_PASSWORD=p4ssw0rd
-  ```
-  
- * You're all set!
-
+Clone the repository and use npm to install the dependencies:
 ```
 npm install
-node app.js
+```
+
+# Configure
+
+ * Edit config.json and add your list of buildTypeId -> name mappings that you want to be displayed in the radiator
+ * Edit package.json and set the TeamCity host, username and password for API authentication. There are other ways to provide this information (e.g. environment variables or the command line), see the [npm docs](http://npmjs.org/doc/config.html) for details.
+
+# Run
+```
+npm start
 ```
 
 Enjoy!
